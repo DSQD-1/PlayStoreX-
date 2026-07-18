@@ -27,7 +27,9 @@ export default function App() {
         setProductsList([]);
       });
 
+
   }, []);
+
 
 
   return (
@@ -37,7 +39,9 @@ export default function App() {
       <h1>🎮 PlayStoreX</h1>
 
 
+
       {page === "home" && (
+
         <>
           <h2>Добро пожаловать 👋</h2>
 
@@ -47,34 +51,39 @@ export default function App() {
             </p>
           ) : (
             <p>
-              Игровой маркетплейс
+              Игровой маркетплейс в Telegram
             </p>
           )}
 
 
-          <h2>🔥 Популярные игры</h2>
+
+          <h2>🔥 Игры</h2>
 
           <div className="cards">
 
-          {games.map(game => (
+            {games.map(game => (
 
-            <div className="card" key={game.id}>
+              <div className="card" key={game.id}>
 
-              <h3>
-                {game.icon} {game.name}
-              </h3>
+                <h3>
+                  {game.icon} {game.name}
+                </h3>
 
-              <p>
-                {game.categories.join(", ")}
-              </p>
+                <p>
+                  {game.categories.join(", ")}
+                </p>
 
-            </div>
+              </div>
 
-          ))}
+            ))}
 
           </div>
+
         </>
+
       )}
+
+
 
 
 
@@ -82,24 +91,96 @@ export default function App() {
 
         <>
 
-        <h2>🛒 Каталог</h2>
+          <h2>🛒 Каталог</h2>
 
-        <div className="cards">
 
-        {productsList.map(product => (
+          <div className="cards">
 
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
+            {productsList.length > 0 ? (
 
-        ))}
+              productsList.map(product => (
 
-        </div>
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+
+              ))
+
+            ) : (
+
+              <div className="card">
+                <h3>
+                  Товаров пока нет
+                </h3>
+              </div>
+
+            )}
+
+          </div>
 
         </>
 
       )}
+
+
+
+
+
+
+      {page === "giveaways" && (
+
+        <>
+
+          <h2>🎁 Розыгрыши</h2>
+
+
+          <div className="card">
+
+            <h3>
+              Скоро запуск
+            </h3>
+
+            <p>
+              Здесь будут бесплатные розыгрыши игр и предметов.
+            </p>
+
+          </div>
+
+        </>
+
+      )}
+
+
+
+
+
+
+      {page === "news" && (
+
+        <>
+
+          <h2>📰 Новости</h2>
+
+
+          <div className="card">
+
+            <h3>
+              PlayStoreX запущен 🚀
+            </h3>
+
+            <p>
+              Следите за обновлениями.
+            </p>
+
+          </div>
+
+        </>
+
+      )}
+
+
+
 
 
 
@@ -107,26 +188,46 @@ export default function App() {
 
         <>
 
-        <h2>👤 Профиль</h2>
-
-        {user ? (
-          <p>
-            {user.first_name}
-          </p>
-        ) : (
-          <p>
-            Открой через Telegram
-          </p>
-        )}
-
-        <button onClick={() => setSellOpen(true)}>
-          ➕ Продать товар
-        </button>
+          <h2>👤 Профиль</h2>
 
 
-        {sellOpen && (
-          <AddProduct />
-        )}
+          <div className="card">
+
+            {user ? (
+
+              <>
+                <h3>
+                  {user.first_name}
+                </h3>
+
+                <p>
+                  Telegram ID: {user.id}
+                </p>
+              </>
+
+            ) : (
+
+              <p>
+                Открой приложение через Telegram
+              </p>
+
+            )}
+
+          </div>
+
+
+
+          <button onClick={() => setSellOpen(!sellOpen)}>
+            ➕ Продать товар
+          </button>
+
+
+          {sellOpen && (
+
+            <AddProduct />
+
+          )}
+
 
         </>
 
@@ -134,7 +235,12 @@ export default function App() {
 
 
 
+
+
+
+
       <nav className="menu">
+
 
         <button onClick={() => setPage("home")}>
           🏠
@@ -146,12 +252,12 @@ export default function App() {
         </button>
 
 
-        <button>
+        <button onClick={() => setPage("giveaways")}>
           🎁
         </button>
 
 
-        <button>
+        <button onClick={() => setPage("news")}>
           📰
         </button>
 
@@ -160,7 +266,9 @@ export default function App() {
           👤
         </button>
 
+
       </nav>
+
 
 
     </div>
