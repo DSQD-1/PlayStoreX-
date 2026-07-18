@@ -7,6 +7,7 @@ import { initTelegram } from "./telegram.js";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [productsList, setProductsList] = useState([]);
 const [sellOpen, setSellOpen] = useState(false);
   useEffect(() => {
     const telegram = initTelegram();
