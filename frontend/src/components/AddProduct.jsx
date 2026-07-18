@@ -60,6 +60,13 @@ export default function AddProduct() {
 
       <input
         placeholder="Цена"
+        <input
+  placeholder="Промокод (необязательно)"
+/>
+
+<textarea
+  placeholder="Описание товара"
+/>
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
