@@ -25,7 +25,18 @@ async function createProduct() {
     promoCode: ""
   };
 
+await fetch(
+  "https://playstorex-3qb3.onrender.com/products/create",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(product)
+  }
+);
 
+alert("Товар добавлен!");
   await fetch(
     "http://localhost:3000/products/create",
     {
