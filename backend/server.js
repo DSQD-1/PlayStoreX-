@@ -11,6 +11,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.get("/categories", (req, res) => {
+  res.json(categories);
+});
 app.post("/users", (req, res) => {
 
   const telegramUser = req.body;
