@@ -9,11 +9,17 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [productsList, setProductsList] = useState([]);
 const [sellOpen, setSellOpen] = useState(false);
-  useEffect(() => {
-    const telegram = initTelegram();
-    setUser(telegram.user);
-  }, []);
+useEffect(() => {
+  const telegram = initTelegram();
+  setUser(telegram.user);
 
+  fetch("http://localhost:3000/products")
+    .then(res => res.json())
+    .then(data => {
+      setProductsList(data);
+    });
+
+}, []);
   return (
     <div className="app">
       <h1>🎮 PlayStoreX</h1>
