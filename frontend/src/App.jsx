@@ -4,12 +4,15 @@ import ProductCard from "./components/ProductCard.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import { games } from "./data/games.js";
 
+
 export default function App() {
 
   const [user, setUser] = useState(null);
+
   const [page, setPage] = useState("home");
 
   const [productsList, setProductsList] = useState([]);
+
   const [myProducts, setMyProducts] = useState([]);
 
   const [balance, setBalance] = useState(0);
@@ -20,39 +23,105 @@ export default function App() {
 
   useEffect(() => {
 
+
     const telegram = initTelegram();
+
 
     setUser(telegram.user);
 
 
 
-    fetch("https://playstorex-3qb3.onrender.com/products")
-      .then(res => res.json())
-      .then(data => {
-        setProductsList(data);
-      });
+    // Создание пользователя Telegram
+
+    if (telegram.user) {
+
+
+      fetch(
+        "https://playstorex-3qb3.onrender.com/users",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type": "application/json"
+
+          },
+
+
+          body: JSON.stringify({
+
+            telegramId: telegram.user.id,
+
+            username: telegram.user.username || "",
+
+            firstName: telegram.user.first_name || ""
+
+          })
+
+
+        }
+      );
+
+    }
+
+
+
+
+    // Получаем товары
+
+    fetch(
+      "https://playstorex-3qb3.onrender.com/products"
+    )
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      setProductsList(data);
+
+    });
+
+
 
 
 
     if (telegram.user) {
 
 
+
+      // Баланс
+
+
       fetch(
         `https://playstorex-3qb3.onrender.com/users/${telegram.user.id}/balance`
       )
+
       .then(res => res.json())
+
       .then(data => {
 
-        setBalance(data.balance);
+        if(data.balance !== undefined){
+
+          setBalance(data.balance);
+
+        }
 
       });
 
 
 
+
+
+      // Мои товары
+
+
       fetch(
         `https://playstorex-3qb3.onrender.com/products/user/${telegram.user.id}`
       )
+
       .then(res => res.json())
+
       .then(data => {
 
         setMyProducts(data);
@@ -63,275 +132,265 @@ export default function App() {
     }
 
 
+
   }, []);
+
+
 
 
 
 
   return (
 
-<div className="app">
+    <div className="app">
 
 
-<h1>
-🎮 PlayStoreX
-</h1>
 
+      <h1>
+        🎮 PlayStoreX
+      </h1>
 
 
 
 
-{page === "home" && (
 
-<>
+      {page === "home" && (
 
-<h2>
-Добро пожаловать 👋
-</h2>
+        <>
 
+        <h2>
+          Главная
+        </h2>
 
-<p>
-Игровой маркетплейс
-</p>
 
+        <p>
+          Игровой маркетплейс
+        </p>
 
 
-<h2>
-🔥 Игры
-</h2>
 
+        <h2>
+          🎮 Игры
+        </h2>
 
-<div className="cards">
 
+        <div className="cards">
 
-{games.map(game => (
 
-<div className="card" key={game.id}>
+        {games.map(game => (
 
+          <div className="card" key={game.id}>
 
-<h3>
-{game.icon} {game.name}
-</h3>
 
+            <h3>
 
-<p>
-{game.categories.join(", ")}
-</p>
+              {game.icon} {game.name}
 
+            </h3>
 
-</div>
 
-))}
+            <p>
 
+              {game.categories.join(", ")}
 
-</div>
+            </p>
 
 
-</>
+          </div>
 
-)}
+        ))}
 
 
+        </div>
 
 
+        </>
 
+      )}
 
 
-{page === "catalog" && (
 
-<>
 
-<h2>
-🛒 Каталог
-</h2>
 
 
 
-<div className="cards">
+      {page === "catalog" && (
 
+        <>
 
-{productsList.map(product => (
 
-<ProductCard
-key={product.id}
-product={product}
-/>
+        <h2>
+          🛒 Каталог
+        </h2>
 
-))}
 
 
-</div>
+        <div className="cards">
 
 
-</>
+        {productsList.map(product => (
 
-)}
+          <ProductCard
 
+            key={product.id}
 
+            product={product}
 
+          />
 
+        ))}
 
 
+        </div>
 
 
-{page === "profile" && (
 
-<>
+        </>
 
+      )}
 
-<h2>
-👤 Профиль
-</h2>
 
 
 
-<div className="card">
 
 
-{user ? (
 
-<>
 
-<h3>
-👋 {user.first_name}
-</h3>
 
+      {page === "profile" && (
 
-<p>
-💰 Баланс
-</p>
+        <>
 
 
-<h2>
-{balance} ₽
-</h2>
+        <h2>
+          👤 Профиль
+        </h2>
 
 
-<button>
-➕ Пополнить
-</button>
 
+        <div className="card">
 
-</>
 
-) : (
+        {user ? (
 
-<p>
-Пользователь Telegram не найден
-</p>
+          <>
 
-)}
 
+          <h3>
+            👋 {user.first_name}
+          </h3>
 
 
-</div>
+          <p>
+            Telegram ID: {user.id}
+          </p>
 
 
+          <h2>
+            💰 {balance} ₽
+          </h2>
 
 
 
-<h2>
-📦 Мои товары
-</h2>
+          <button>
+            Пополнить
+          </button>
 
 
+          </>
 
-<div className="cards">
 
+        ) : (
 
-{myProducts.length > 0 ? (
+          <p>
+            Пользователь не найден
+          </p>
 
+        )}
 
-myProducts.map(product => (
 
 
-<div
-className="card"
-key={product.id}
->
+        </div>
 
 
-<img
-src={product.image}
-style={{
-width:"100%",
-borderRadius:"20px"
-}}
-/>
 
 
-<h3>
-{product.title}
-</h3>
 
 
-<p>
-{product.price} ₽
-</p>
+        <h2>
+          📦 Мои товары
+        </h2>
 
 
 
-<button>
-✏️ Изменить
-</button>
+        {myProducts.map(product => (
 
 
-<button>
-🗑 Удалить
-</button>
+          <div className="card" key={product.id}>
 
 
+            <img
 
-</div>
+              src={product.image}
 
+              style={{
+                width:"100%",
+                borderRadius:"20px"
+              }}
 
-))
+            />
 
 
-) : (
+            <h3>
+              {product.title}
+            </h3>
 
 
-<div className="card">
+            <p>
+              {product.price} ₽
+            </p>
 
-<p>
-Товаров нет
-</p>
 
+            <button>
+              ✏️ Изменить
+            </button>
 
-</div>
 
+            <button>
+              🗑 Удалить
+            </button>
 
-)}
 
+          </div>
 
 
-</div>
+        ))}
 
 
 
 
 
-<button
-onClick={() => setSellOpen(!sellOpen)}
->
+        <button
+          onClick={() => setSellOpen(!sellOpen)}
+        >
 
-➕ Добавить товар
+          ➕ Добавить товар
 
-</button>
+        </button>
 
 
 
-{sellOpen && (
+        {sellOpen && (
 
-<AddProduct />
+          <AddProduct />
 
-)}
+        )}
 
 
 
-</>
+        </>
 
-)}
+      )}
 
 
 
@@ -339,94 +398,94 @@ onClick={() => setSellOpen(!sellOpen)}
 
 
 
+      {page === "giveaways" && (
 
-{page === "giveaways" && (
+        <>
 
-<>
+        <h2>
+          🎁 Розыгрыши
+        </h2>
 
-<h2>
-🎁 Розыгрыши
-</h2>
 
+        <div className="card">
 
-<div className="card">
+          Скоро будут розыгрыши
 
-Скоро будут розыгрыши
+        </div>
 
-</div>
 
+        </>
 
-</>
+      )}
 
-)}
 
 
 
 
 
 
+      {page === "news" && (
 
+        <>
 
-{page === "news" && (
+        <h2>
+          📰 Новости
+        </h2>
 
-<>
 
-<h2>
-📰 Новости
-</h2>
+        <div className="card">
 
+          Новости PlayStoreX
 
-<div className="card">
+        </div>
 
-Новости PlayStoreX
 
-</div>
+        </>
 
+      )}
 
-</>
 
-)}
 
 
 
 
 
+      <nav className="menu">
 
 
-<nav className="menu">
+        <button onClick={() => setPage("home")}>
+          🏠
+        </button>
 
 
-<button onClick={() => setPage("home")}>
-🏠
-</button>
+        <button onClick={() => setPage("catalog")}>
+          🛒
+        </button>
 
 
-<button onClick={() => setPage("catalog")}>
-🛒
-</button>
+        <button onClick={() => setPage("giveaways")}>
+          🎁
+        </button>
 
 
-<button onClick={() => setPage("giveaways")}>
-🎁
-</button>
+        <button onClick={() => setPage("news")}>
+          📰
+        </button>
 
 
-<button onClick={() => setPage("news")}>
-📰
-</button>
+        <button onClick={() => setPage("profile")}>
+          👤
+        </button>
 
 
-<button onClick={() => setPage("profile")}>
-👤
-</button>
 
+      </nav>
 
-</nav>
 
 
 
-</div>
+    </div>
 
-);
+  );
 
 }
