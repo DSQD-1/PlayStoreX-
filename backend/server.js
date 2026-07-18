@@ -10,6 +10,35 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.post("/users", (req, res) => {
+
+  const telegramUser = req.body;
+
+  const existing = users.find(
+    user => user.telegramId === telegramUser.telegramId
+  );
+
+
+  if (existing) {
+    return res.json(existing);
+  }
+
+
+  const newUser = {
+    id: Date.now(),
+    telegramId: telegramUser.telegramId,
+    username: telegramUser.username || "",
+    firstName: telegramUser.firstName || "",
+    balance: 0,
+    banned: false
+  };
+
+
+  users.push(newUser);
+
+  res.json(newUser);
+
+});
 app.get("/", (req, res) => {
   res.json({
     status: "PlayStoreX API работает"
