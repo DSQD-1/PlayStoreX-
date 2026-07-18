@@ -16,7 +16,9 @@ export default function App() {
   return (
     <div className="app">
       <h1>🎮 PlayStoreX</h1>
-
+<button>
+  🛒 Продать товар
+</button>
       {user ? (
         <p>Привет, {user.first_name} 👋</p>
       ) : (
