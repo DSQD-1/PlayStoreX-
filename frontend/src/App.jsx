@@ -12,7 +12,7 @@ useEffect(() => {
   const telegram = initTelegram();
   setUser(telegram.user);
 
-  fetch("http://localhost:3000/products")
+fetch("https://playstorex-3qb3.onrender.com/products")
     .then(res => res.json())
     .then(data => {
       setProductsList(data);
