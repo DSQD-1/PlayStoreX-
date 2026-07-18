@@ -20,19 +20,25 @@ export default function App() {
         <p>Игровой маркетплейс в Telegram</p>
       )}
 
-      <div className="cards">
-        <div className="card">
-          🎁 Roblox
-        </div>
+     <div className="cards">
+  {games.map((game) => (
+    <div className="card" key={game.id}>
+      <h2>
+        {game.icon} {game.name}
+      </h2>
 
-        <div className="card">
-          🔥 Brawl Stars
-        </div>
+      <p>
+        Категории:
+      </p>
 
-        <div className="card">
-          ⚡ Standoff 2
-        </div>
-      </div>
+      {game.categories.map((category) => (
+        <span key={category}>
+          {category} 
+        </span>
+      ))}
+    </div>
+  ))}
+</div>
 
       <nav className="menu">
         <button>🏠 Главная</button>
