@@ -82,6 +82,37 @@ app.post("/users/:telegramId/balance", (req, res) => {
   });
 
 });
+app.post("/products/create", (req, res) => {
+
+  const product = {
+    id: Date.now(),
+
+    sellerId: req.body.sellerId,
+
+    title: req.body.title,
+    category: req.body.category,
+    game: req.body.game,
+
+    price: Number(req.body.price),
+
+    description: req.body.description || "",
+
+    image: req.body.image || "",
+
+    promoCode: req.body.promoCode || null,
+
+    status: "active",
+
+    createdAt: new Date()
+  };
+
+
+  products.push(product);
+
+
+  res.json(product);
+
+});
 app.get("/", (req, res) => {
   res.json({
     status: "PlayStoreX API работает"
