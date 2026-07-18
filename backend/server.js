@@ -10,13 +10,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-
-let users = [];
-let products = [];
-let orders = [];
-
-
 app.get("/", (req, res) => {
   res.json({
     status: "PlayStoreX API работает"
