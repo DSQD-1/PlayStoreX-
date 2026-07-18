@@ -27,13 +27,16 @@ const [game, setGame] = useState("");
       <h2>
         ➕ Продать товар
       </h2>
-<select>
-  <option>
+<select
+  value={game}
+  onChange={(e) => setGame(e.target.value)}
+>
+  <option value="">
     Выберите игру
   </option>
 
   {robloxGames.map((game) => (
-    <option key={game}>
+    <option key={game} value={game}>
       {game}
     </option>
   ))}
