@@ -3,10 +3,20 @@ import { useState } from "react";
 export default function AddProduct() {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
+
+  function uploadImage(e) {
+    const file = e.target.files[0];
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setImage(url);
+    }
+  }
 
   function createProduct() {
     alert(
-      `Товар создан: ${title} за ${price}₽`
+      `Товар: ${title}\nЦена: ${price}₽`
     );
   }
 
@@ -16,6 +26,20 @@ export default function AddProduct() {
       <h2>
         ➕ Продать товар
       </h2>
+
+      {image && (
+        <img
+          src={image}
+          alt="preview"
+          width="150"
+        />
+      )}
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={uploadImage}
+      />
 
       <input
         placeholder="Название товара"
@@ -30,7 +54,7 @@ export default function AddProduct() {
       />
 
       <button onClick={createProduct}>
-        Создать
+        Создать товар
       </button>
 
     </div>
