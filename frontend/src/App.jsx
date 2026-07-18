@@ -29,7 +29,7 @@ export default function App() {
 
     setUser(telegram.user);
 
-
+console.log("USER FROM TG:", telegram.user);
 
     // Создание пользователя Telegram
 
