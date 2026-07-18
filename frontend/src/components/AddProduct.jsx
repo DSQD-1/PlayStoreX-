@@ -51,26 +51,19 @@ export default function AddProduct() {
         accept="image/*"
         onChange={uploadImage}
       />
-
-      <input
-        placeholder="Название товара"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      <input
-        placeholder="Цена"
-        <input
-  placeholder="Промокод (необязательно)"
+<input
+  placeholder="Цена"
+  value={price}
+  onChange={(e) => setPrice(e.target.value)}
 />
 
 <textarea
   placeholder="Описание товара"
 />
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
 
+<input
+  placeholder="Промокод (необязательно)"
+/>
       <button onClick={createProduct}>
         Создать товар
       </button>
