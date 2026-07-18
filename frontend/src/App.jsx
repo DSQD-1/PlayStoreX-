@@ -8,271 +8,425 @@ export default function App() {
 
   const [user, setUser] = useState(null);
   const [page, setPage] = useState("home");
+
   const [productsList, setProductsList] = useState([]);
+  const [myProducts, setMyProducts] = useState([]);
+
+  const [balance, setBalance] = useState(0);
+
   const [sellOpen, setSellOpen] = useState(false);
+
 
 
   useEffect(() => {
 
     const telegram = initTelegram();
+
     setUser(telegram.user);
+
 
 
     fetch("https://playstorex-3qb3.onrender.com/products")
       .then(res => res.json())
       .then(data => {
         setProductsList(data);
-      })
-      .catch(() => {
-        setProductsList([]);
       });
+
+
+
+    if (telegram.user) {
+
+
+      fetch(
+        `https://playstorex-3qb3.onrender.com/users/${telegram.user.id}/balance`
+      )
+      .then(res => res.json())
+      .then(data => {
+
+        setBalance(data.balance);
+
+      });
+
+
+
+      fetch(
+        `https://playstorex-3qb3.onrender.com/products/user/${telegram.user.id}`
+      )
+      .then(res => res.json())
+      .then(data => {
+
+        setMyProducts(data);
+
+      });
+
+
+    }
 
 
   }, []);
 
 
 
+
   return (
 
-    <div className="app">
+<div className="app">
 
-      <h1>🎮 PlayStoreX</h1>
 
+<h1>
+🎮 PlayStoreX
+</h1>
 
 
-      {page === "home" && (
 
-        <>
-          <h2>Добро пожаловать 👋</h2>
 
-          {user ? (
-            <p>
-              Привет, {user.first_name}
-            </p>
-          ) : (
-            <p>
-              Игровой маркетплейс в Telegram
-            </p>
-          )}
 
+{page === "home" && (
 
+<>
 
-          <h2>🔥 Игры</h2>
+<h2>
+Добро пожаловать 👋
+</h2>
 
-          <div className="cards">
 
-            {games.map(game => (
+<p>
+Игровой маркетплейс
+</p>
 
-              <div className="card" key={game.id}>
 
-                <h3>
-                  {game.icon} {game.name}
-                </h3>
 
-                <p>
-                  {game.categories.join(", ")}
-                </p>
+<h2>
+🔥 Игры
+</h2>
 
-              </div>
 
-            ))}
+<div className="cards">
 
-          </div>
 
-        </>
+{games.map(game => (
 
-      )}
+<div className="card" key={game.id}>
 
 
+<h3>
+{game.icon} {game.name}
+</h3>
 
 
+<p>
+{game.categories.join(", ")}
+</p>
 
-      {page === "catalog" && (
 
-        <>
+</div>
 
-          <h2>🛒 Каталог</h2>
+))}
 
 
-          <div className="cards">
+</div>
 
-            {productsList.length > 0 ? (
 
-              productsList.map(product => (
+</>
 
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                />
+)}
 
-              ))
 
-            ) : (
 
-              <div className="card">
-                <h3>
-                  Товаров пока нет
-                </h3>
-              </div>
 
-            )}
 
-          </div>
 
-        </>
 
-      )}
+{page === "catalog" && (
 
+<>
 
+<h2>
+🛒 Каталог
+</h2>
 
 
 
+<div className="cards">
 
-      {page === "giveaways" && (
 
-        <>
+{productsList.map(product => (
 
-          <h2>🎁 Розыгрыши</h2>
+<ProductCard
+key={product.id}
+product={product}
+/>
 
+))}
 
-          <div className="card">
 
-            <h3>
-              Скоро запуск
-            </h3>
+</div>
 
-            <p>
-              Здесь будут бесплатные розыгрыши игр и предметов.
-            </p>
 
-          </div>
+</>
 
-        </>
+)}
 
-      )}
 
 
 
 
 
 
-      {page === "news" && (
 
-        <>
+{page === "profile" && (
 
-          <h2>📰 Новости</h2>
+<>
 
 
-          <div className="card">
+<h2>
+👤 Профиль
+</h2>
 
-            <h3>
-              PlayStoreX запущен 🚀
-            </h3>
 
-            <p>
-              Следите за обновлениями.
-            </p>
 
-          </div>
+<div className="card">
 
-        </>
 
-      )}
+{user ? (
 
+<>
 
+<h3>
+👋 {user.first_name}
+</h3>
 
 
+<p>
+💰 Баланс
+</p>
 
 
-      {page === "profile" && (
+<h2>
+{balance} ₽
+</h2>
 
-        <>
 
-          <h2>👤 Профиль</h2>
+<button>
+➕ Пополнить
+</button>
 
 
-          <div className="card">
+</>
 
-            {user ? (
+) : (
 
-              <>
-                <h3>
-                  {user.first_name}
-                </h3>
+<p>
+Пользователь Telegram не найден
+</p>
 
-                <p>
-                  Telegram ID: {user.id}
-                </p>
-              </>
+)}
 
-            ) : (
 
-              <p>
-                Открой приложение через Telegram
-              </p>
 
-            )}
+</div>
 
-          </div>
 
 
 
-          <button onClick={() => setSellOpen(!sellOpen)}>
-            ➕ Продать товар
-          </button>
 
+<h2>
+📦 Мои товары
+</h2>
 
-          {sellOpen && (
 
-            <AddProduct />
 
-          )}
+<div className="cards">
 
 
-        </>
+{myProducts.length > 0 ? (
 
-      )}
 
+myProducts.map(product => (
 
 
+<div
+className="card"
+key={product.id}
+>
 
 
+<img
+src={product.image}
+style={{
+width:"100%",
+borderRadius:"20px"
+}}
+/>
 
 
-      <nav className="menu">
+<h3>
+{product.title}
+</h3>
 
 
-        <button onClick={() => setPage("home")}>
-          🏠
-        </button>
+<p>
+{product.price} ₽
+</p>
 
 
-        <button onClick={() => setPage("catalog")}>
-          🛒
-        </button>
 
+<button>
+✏️ Изменить
+</button>
 
-        <button onClick={() => setPage("giveaways")}>
-          🎁
-        </button>
 
+<button>
+🗑 Удалить
+</button>
 
-        <button onClick={() => setPage("news")}>
-          📰
-        </button>
 
 
-        <button onClick={() => setPage("profile")}>
-          👤
-        </button>
+</div>
 
 
-      </nav>
+))
 
 
+) : (
 
-    </div>
 
-  );
+<div className="card">
+
+<p>
+Товаров нет
+</p>
+
+
+</div>
+
+
+)}
+
+
+
+</div>
+
+
+
+
+
+<button
+onClick={() => setSellOpen(!sellOpen)}
+>
+
+➕ Добавить товар
+
+</button>
+
+
+
+{sellOpen && (
+
+<AddProduct />
+
+)}
+
+
+
+</>
+
+)}
+
+
+
+
+
+
+
+
+{page === "giveaways" && (
+
+<>
+
+<h2>
+🎁 Розыгрыши
+</h2>
+
+
+<div className="card">
+
+Скоро будут розыгрыши
+
+</div>
+
+
+</>
+
+)}
+
+
+
+
+
+
+
+
+{page === "news" && (
+
+<>
+
+<h2>
+📰 Новости
+</h2>
+
+
+<div className="card">
+
+Новости PlayStoreX
+
+</div>
+
+
+</>
+
+)}
+
+
+
+
+
+
+
+<nav className="menu">
+
+
+<button onClick={() => setPage("home")}>
+🏠
+</button>
+
+
+<button onClick={() => setPage("catalog")}>
+🛒
+</button>
+
+
+<button onClick={() => setPage("giveaways")}>
+🎁
+</button>
+
+
+<button onClick={() => setPage("news")}>
+📰
+</button>
+
+
+<button onClick={() => setPage("profile")}>
+👤
+</button>
+
+
+</nav>
+
+
+
+</div>
+
+);
 
 }
