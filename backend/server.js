@@ -1,6 +1,11 @@
 import express from "express";
 import cors from "cors";
-
+import {
+  users,
+  products,
+  orders,
+  withdrawals
+} from "./database.js"; 
 const app = express();
 
 app.use(cors());
