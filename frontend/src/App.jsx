@@ -1,5 +1,4 @@
 import AddProduct from "./components/AddProduct.jsx";
-import { products } from "./data/products.js";
 import ProductCard from "./components/ProductCard.jsx";
 import { games } from "./data/games.js";
 import { useEffect, useState } from "react";
