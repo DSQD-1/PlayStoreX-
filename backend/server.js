@@ -141,9 +141,11 @@ app.post("/products", (req, res) => {
     ...req.body
   };
 
-  products.push(product);
+products.push(product);
 
-  res.json(product);
+console.log("Новый товар:", product);
+
+res.json(product);
 
 });
 
