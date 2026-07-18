@@ -16,7 +16,7 @@ const [sellOpen, setSellOpen] = useState(false);
   return (
     <div className="app">
       <h1>🎮 PlayStoreX</h1>
-<button>
+<button onClick={() => setSellOpen(true)}>
   🛒 Продать товар
 </button>
       {user ? (
