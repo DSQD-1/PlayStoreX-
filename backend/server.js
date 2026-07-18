@@ -13,34 +13,42 @@ import { categories } from "./categories.js";
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
 
 
-// Категории
+// Проверка сервера
 
-app.get("/categories", (req, res) => {
+app.get("/", (req, res) => {
 
-  res.json(categories);
+  res.json({
+    status: "PlayStoreX API работает"
+  });
 
 });
 
 
 
+// Получить всех пользователей
+
+app.get("/users", (req, res) => {
+
+  res.json(users);
+
+});
 
 
-// Создание пользователя Telegram
+
+// Создать пользователя
 
 app.post("/users", (req, res) => {
-
 
   const telegramUser = req.body;
 
 
   const existing = users.find(
-    user => user.telegramId === telegramUser.telegramId
+    user => user.telegramId == telegramUser.telegramId
   );
 
 
@@ -54,7 +62,6 @@ app.post("/users", (req, res) => {
 
   const newUser = {
 
-
     id: Date.now(),
 
     telegramId: telegramUser.telegramId,
@@ -67,9 +74,7 @@ app.post("/users", (req, res) => {
 
     banned: false
 
-
   };
-
 
 
   users.push(newUser);
@@ -77,17 +82,14 @@ app.post("/users", (req, res) => {
 
   res.json(newUser);
 
-
 });
 
 
 
 
+// Баланс пользователя
 
-
-// Получить баланс
-
-app.get("/users/:telegramId/balance", (req, res) => {
+app.get("/users/:telegramId/balance", (req,res)=>{
 
 
   const user = users.find(
@@ -95,23 +97,17 @@ app.get("/users/:telegramId/balance", (req, res) => {
   );
 
 
-
-  if (!user) {
+  if(!user){
 
     return res.status(404).json({
-
-      error: "Пользователь не найден"
-
+      error:"Пользователь не найден"
     });
 
   }
 
 
-
   res.json({
-
-    balance: user.balance
-
+    balance:user.balance
   });
 
 
@@ -120,12 +116,9 @@ app.get("/users/:telegramId/balance", (req, res) => {
 
 
 
+// Пополнение баланса
 
-
-
-// Пополнить баланс
-
-app.post("/users/:telegramId/balance", (req, res) => {
+app.post("/users/:telegramId/balance",(req,res)=>{
 
 
   const user = users.find(
@@ -133,100 +126,37 @@ app.post("/users/:telegramId/balance", (req, res) => {
   );
 
 
-
-  if (!user) {
+  if(!user){
 
     return res.status(404).json({
-
-      error: "Пользователь не найден"
-
+      error:"Пользователь не найден"
     });
 
   }
-
 
 
 
   user.balance += Number(req.body.amount);
 
 
-
   res.json({
-
-    balance: user.balance
-
+    balance:user.balance
   });
 
 
-
 });
 
 
 
 
 
+// Категории
 
+app.get("/categories",(req,res)=>{
 
-
-
-// Создать товар
-
-app.post("/products/create", (req, res) => {
-
-
-  const product = {
-
-
-    id: Date.now(),
-
-
-    sellerId: req.body.sellerId || null,
-
-
-    title: req.body.title,
-
-
-    category: req.body.category || "",
-
-
-    game: req.body.game || "",
-
-
-    price: Number(req.body.price),
-
-
-    description: req.body.description || "",
-
-
-    image: req.body.image || "",
-
-
-    promoCode: req.body.promoCode || null,
-
-
-    status: "active",
-
-
-    createdAt: new Date()
-
-
-
-  };
-
-
-
-  products.push(product);
-
-
-
-  res.json(product);
-
-
+  res.json(categories);
 
 });
-
-
-
 
 
 
@@ -234,35 +164,27 @@ app.post("/products/create", (req, res) => {
 
 // Все товары
 
-app.get("/products", (req, res) => {
-
+app.get("/products",(req,res)=>{
 
   res.json(products);
 
-
 });
 
 
 
 
 
+// Товары пользователя
+
+app.get("/products/user/:id",(req,res)=>{
 
 
-
-// Товары конкретного пользователя
-
-app.get("/products/user/:id", (req, res) => {
-
-
-  const userProducts = products.filter(
-
+  const result = products.filter(
     product => product.sellerId == req.params.id
-
   );
 
 
-
-  res.json(userProducts);
+  res.json(result);
 
 
 });
@@ -271,22 +193,34 @@ app.get("/products/user/:id", (req, res) => {
 
 
 
+// Создать товар
 
-
-
-// Старое создание товара
-
-app.post("/products", (req, res) => {
+app.post("/products/create",(req,res)=>{
 
 
   const product = {
 
-
     id: Date.now(),
 
+    sellerId: req.body.sellerId || null,
 
-    ...req.body
+    title: req.body.title,
 
+    game: req.body.game || "",
+
+    category: req.body.category || "",
+
+    price: Number(req.body.price),
+
+    image: req.body.image || "",
+
+    description: req.body.description || "",
+
+    promoCode: req.body.promoCode || null,
+
+    status:"active",
+
+    createdAt:new Date()
 
   };
 
@@ -295,67 +229,39 @@ app.post("/products", (req, res) => {
   products.push(product);
 
 
-
   res.json(product);
 
 
-
 });
 
 
 
 
 
+// Удаление товара
+
+app.delete("/products/:id",(req,res)=>{
 
 
-
-// Заказы
-
-app.post("/orders", (req, res) => {
-
-
-  const order = {
+  const index = products.findIndex(
+    p => p.id == req.params.id
+  );
 
 
-    id: Date.now(),
+  if(index === -1){
+
+    return res.status(404).json({
+      error:"Товар не найден"
+    });
+
+  }
 
 
-    status: "waiting",
-
-
-    ...req.body
-
-
-  };
-
-
-
-  orders.push(order);
-
-
-
-  res.json(order);
-
-
-
-});
-
-
-
-
-
-
-
-
-// Проверка сервера
-
-app.get("/", (req, res) => {
+  products.splice(index,1);
 
 
   res.json({
-
-    status: "PlayStoreX API работает"
-
+    success:true
   });
 
 
@@ -365,15 +271,39 @@ app.get("/", (req, res) => {
 
 
 
+// Заказы
+
+app.post("/orders",(req,res)=>{
+
+
+  const order = {
+
+    id:Date.now(),
+
+    status:"waiting",
+
+    ...req.body
+
+  };
+
+
+  orders.push(order);
+
+
+  res.json(order);
+
+
+});
 
 
 
-app.listen(3000, () => {
 
+
+
+app.listen(3000,()=>{
 
   console.log(
-    "PlayStoreX API запущен на порту 3000"
+    "PlayStoreX API запущен"
   );
-
 
 });
