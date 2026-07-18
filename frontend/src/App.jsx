@@ -52,6 +52,7 @@ export default function App() {
     />
   ))}
 </div>
+<AddProduct />
       <nav className="menu">
         <button>🏠 Главная</button>
         <button>🎮 Каталог</button>
