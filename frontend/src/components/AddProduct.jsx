@@ -1,3 +1,4 @@
+import { robloxGames } from "../data/robloxGames.js";
 import { useState } from "react";
 
 export default function AddProduct() {
@@ -26,7 +27,17 @@ export default function AddProduct() {
       <h2>
         ➕ Продать товар
       </h2>
+<select>
+  <option>
+    Выберите игру
+  </option>
 
+  {robloxGames.map((game) => (
+    <option key={game}>
+      {game}
+    </option>
+  ))}
+</select>
       {image && (
         <img
           src={image}
