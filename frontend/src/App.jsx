@@ -41,7 +41,16 @@ export default function App() {
     </div>
   ))}
 </div>
+<h2>🔥 Товары</h2>
 
+<div className="cards">
+  {products.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+    />
+  ))}
+</div>
       <nav className="menu">
         <button>🏠 Главная</button>
         <button>🎮 Каталог</button>
