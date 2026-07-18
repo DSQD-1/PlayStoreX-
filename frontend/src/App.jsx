@@ -1,11 +1,23 @@
+import { useEffect, useState } from "react";
+import { initTelegram } from "./telegram.js";
+
 export default function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const telegram = initTelegram();
+    setUser(telegram.user);
+  }, []);
+
   return (
     <div className="app">
       <h1>🎮 PlayStoreX</h1>
 
-      <p>
-        Игровой маркетплейс в Telegram
-      </p>
+      {user ? (
+        <p>Привет, {user.first_name} 👋</p>
+      ) : (
+        <p>Игровой маркетплейс в Telegram</p>
+      )}
 
       <div className="cards">
         <div className="card">
@@ -22,10 +34,10 @@ export default function App() {
       </div>
 
       <nav className="menu">
-        <button>Главная</button>
-        <button>Каталог</button>
-        <button>Новости</button>
-        <button>Профиль</button>
+        <button>🏠 Главная</button>
+        <button>🎮 Каталог</button>
+        <button>📰 Новости</button>
+        <button>👤 Профиль</button>
       </nav>
     </div>
   );
