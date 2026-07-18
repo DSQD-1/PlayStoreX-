@@ -54,7 +54,7 @@ useEffect(() => {
 <h2>🔥 Товары</h2>
 
 <div className="cards">
-  {products.map((product) => (
+  {productsList.map((product) => (
     <ProductCard
       key={product.id}
       product={product}
