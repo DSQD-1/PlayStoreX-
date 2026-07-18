@@ -1,6 +1,7 @@
-export const news = [
+export const giveaways = [
   {
-    title: "Добро пожаловать в PlayStoreX",
-    text: "Игровой маркетплейс скоро запустится!"
+    title: "Розыгрыш Robux",
+    prize: "1000 Robux",
+    active: true
   }
 ];
