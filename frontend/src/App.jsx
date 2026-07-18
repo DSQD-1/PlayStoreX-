@@ -60,7 +60,7 @@ fetch("https://playstorex-3qb3.onrender.com/products")
     />
   ))}
 </div>
-<AddProduct />
+{sellOpen && <AddProduct />}
 <nav className="menu">
   <button>🏠 Главная</button>
   <button>🛒 Каталог</button>
