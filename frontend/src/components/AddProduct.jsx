@@ -5,7 +5,7 @@ export default function AddProduct() {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-
+const [game, setGame] = useState("");
   function uploadImage(e) {
     const file = e.target.files[0];
 
