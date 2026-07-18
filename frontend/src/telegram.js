@@ -1,21 +1,34 @@
 import WebApp from "@twa-dev/sdk";
 
+
 export function initTelegram() {
 
-  try {
-    WebApp.ready();
 
-    return {
-      user: WebApp.initDataUnsafe?.user || null,
-      colorScheme: WebApp.colorScheme,
-    };
+  WebApp.ready();
 
-  } catch (error) {
 
-    return {
-      user: null,
-      colorScheme: "light",
-    };
+  WebApp.expand();
 
-  }
+
+
+  const user = WebApp.initDataUnsafe?.user;
+
+
+
+  console.log(
+    "Telegram user:",
+    user
+  );
+
+
+
+  return {
+
+    user: user || null,
+
+    colorScheme: WebApp.colorScheme
+
+  };
+
+
 }
