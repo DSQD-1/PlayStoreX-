@@ -14,12 +14,32 @@ const [game, setGame] = useState("");
       setImage(url);
     }
   }
+async function createProduct() {
 
-  function createProduct() {
-    alert(
-      `Товар: ${title}\nЦена: ${price}₽`
-    );
-  }
+  const product = {
+    title,
+    price,
+    game,
+    image,
+    description: "",
+    promoCode: ""
+  };
+
+
+  await fetch(
+    "http://localhost:3000/products/create",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(product)
+    }
+  );
+
+
+  alert("Товар добавлен!");
+}
 
   return (
     <div className="card">
