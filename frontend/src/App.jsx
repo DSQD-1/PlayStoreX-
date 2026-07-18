@@ -53,12 +53,10 @@ export default function App() {
   ))}
 </div>
 <AddProduct />
-      <nav className="menu">
-        <button>🏠 Главная</button>
-        <button>🎮 Каталог</button>
-        <button>📰 Новости</button>
-        <button>👤 Профиль</button>
-      </nav>
-    </div>
-  );
-}
+<nav className="menu">
+  <button>🏠 Главная</button>
+  <button>🛒 Каталог</button>
+  <button>🎁 Розыгрыши</button>
+  <button>📰 Новости</button>
+  <button>👤 Профиль</button>
+</nav>
