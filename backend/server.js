@@ -38,6 +38,49 @@ app.post("/users", (req, res) => {
 
   res.json(newUser);
 
+}); 
+app.get("/users/:telegramId/balance", (req, res) => {
+
+  const user = users.find(
+    u => u.telegramId === req.params.telegramId
+  );
+
+
+  if (!user) {
+    return res.status(404).json({
+      error: "Пользователь не найден"
+    });
+  }
+
+
+  res.json({
+    balance: user.balance
+  });
+
+});
+
+
+app.post("/users/:telegramId/balance", (req, res) => {
+
+  const user = users.find(
+    u => u.telegramId === req.params.telegramId
+  );
+
+
+  if (!user) {
+    return res.status(404).json({
+      error: "Пользователь не найден"
+    });
+  }
+
+
+  user.balance += Number(req.body.amount);
+
+
+  res.json({
+    balance: user.balance
+  });
+
 });
 app.get("/", (req, res) => {
   res.json({
