@@ -6,6 +6,7 @@ import {
   orders,
   withdrawals
 } from "./database.js"; 
+import { categories } from "./categories.js";
 const app = express();
 
 app.use(cors());
