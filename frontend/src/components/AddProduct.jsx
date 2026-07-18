@@ -1,107 +1,174 @@
-import { robloxGames } from "../data/robloxGames.js";
 import { useState } from "react";
+import { robloxGames } from "../data/robloxGames.js";
 
 export default function AddProduct() {
+
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-const [game, setGame] = useState("");
+  const [game, setGame] = useState("");
+  const [description, setDescription] = useState("");
+
+
   function uploadImage(e) {
+
     const file = e.target.files[0];
 
     if (file) {
+
       const url = URL.createObjectURL(file);
+
       setImage(url);
+
     }
+
   }
-async function createProduct() {
 
-  const product = {
-    title,
-    price,
-    game,
-    image,
-    description: "",
-    promoCode: ""
-  };
 
-await fetch(
-  "https://playstorex-3qb3.onrender.com/products/create",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(product)
+
+  async function createProduct() {
+
+
+    const product = {
+
+      title,
+
+      price: Number(price),
+
+      image,
+
+      game,
+
+      description
+
+    };
+
+
+
+    await fetch(
+      "https://playstorex-3qb3.onrender.com/products/create",
+      {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(product)
+
+      }
+    );
+
+
+
+    alert("✅ Товар добавлен");
+
+
+    setTitle("");
+    setPrice("");
+    setImage("");
+    setGame("");
+    setDescription("");
+
   }
-);
-
-alert("Товар добавлен!");
-  await fetch(
-    "http://localhost:3000/products/create",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(product)
-    }
-  );
 
 
-  alert("Товар добавлен!");
-}
+
 
   return (
+
     <div className="card">
+
 
       <h2>
         ➕ Продать товар
       </h2>
-<select
-  value={game}
-  onChange={(e) => setGame(e.target.value)}
->
-  <option value="">
-    Выберите игру
-  </option>
 
-  {robloxGames.map((game) => (
-    <option key={game} value={game}>
-      {game}
-    </option>
-  ))}
-</select>
+
+
+      <select
+        value={game}
+        onChange={(e)=>setGame(e.target.value)}
+      >
+
+        <option>
+          Выберите игру
+        </option>
+
+
+        {robloxGames.map((item)=>(
+
+          <option key={item}>
+            {item}
+          </option>
+
+        ))}
+
+
+      </select>
+
+
+
+
       {image && (
+
         <img
           src={image}
           alt="preview"
-          width="150"
+          style={{
+            width:"100%",
+            borderRadius:"20px",
+            marginTop:"15px"
+          }}
         />
+
       )}
+
+
+
+
 
       <input
         type="file"
         accept="image/*"
         onChange={uploadImage}
       />
-<input
-  placeholder="Цена"
-  value={price}
-  onChange={(e) => setPrice(e.target.value)}
-/>
 
-<textarea
-  placeholder="Описание товара"
-/>
 
-<input
-  placeholder="Промокод (необязательно)"
-/>
+
+      <input
+        placeholder="Название товара"
+        value={title}
+        onChange={(e)=>setTitle(e.target.value)}
+      />
+
+
+
+      <input
+        placeholder="Цена ₽"
+        value={price}
+        onChange={(e)=>setPrice(e.target.value)}
+      />
+
+
+
+      <textarea
+        placeholder="Описание"
+        value={description}
+        onChange={(e)=>setDescription(e.target.value)}
+      />
+
+
+
       <button onClick={createProduct}>
         Создать товар
       </button>
 
+
+
     </div>
+
   );
+
 }
