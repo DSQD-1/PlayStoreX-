@@ -1,3 +1,4 @@
+import { games } from "./data/games.js";
 import { useEffect, useState } from "react";
 import { initTelegram } from "./telegram.js";
 
