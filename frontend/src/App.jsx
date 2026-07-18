@@ -68,3 +68,7 @@ fetch("https://playstorex-3qb3.onrender.com/products")
   <button>📰 Новости</button>
   <button>👤 Профиль</button>
 </nav>
+
+</div>
+  );
+}
